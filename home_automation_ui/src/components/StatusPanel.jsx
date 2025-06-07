@@ -422,6 +422,9 @@ const StatusPanel = () => {
                           <p className="text-sm text-gray-200 mb-2">Cloud Coverage</p>
                           <CloudPie clouds={weather.clouds.all} />
                         </div>
+                        <div>
+                          {now.getTime()}
+                        </div>
                       </div>
                     </div>
                   );
