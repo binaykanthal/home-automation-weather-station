@@ -20,7 +20,7 @@ export default function HistoryChart() {
 
   //subscribe to Websocket
   useEffect(()=>{
-    const ws = new WebSocket(`ws://${window.location.hostname}:3000`);
+    const ws = new WebSocket(window.location.origin.replace(/^http/, 'ws'));
     wsRef.current= ws;
 
     ws.onopen = () => console.log('HistoryChart WS connected');
