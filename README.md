@@ -1,7 +1,9 @@
 HOME AUTOMATION & WEATHER STATION WITH AI PREDICTIONS
+
 This application provides a comprehensive solution for smart home management, integrating Internet of Things (IoT) device control with real-time weather monitoring, historical data visualization, and AI-powered future weather predictions.
 
 1. WHY WE NEED THIS APPLICATION
+
 In today's interconnected world, managing various home devices and staying informed about environmental conditions often requires juggling multiple apps and sources. Current solutions often suffer from:
 
 Disparate Control: IoT devices are typically controlled through separate applications, leading to fragmented user experiences.
@@ -15,6 +17,7 @@ Absence of Proactive Measures: Without future weather predictions, users cannot 
 This application addresses these challenges by offering a centralized platform that unifies device control, provides rich environmental insights, and empowers users with predictive capabilities, leading to more efficient, comfortable, and responsive smart homes.
 
 2. WHAT IS THIS APPLICATION?
+
 This application is a full-stack web solution that combines hardware interaction with robust software services to create an intelligent home environment. It features:
 
 Integrated IoT Device Control: Remotely control connected relays (e.g., for lights, fans, appliances) through a user-friendly web interface.
@@ -30,6 +33,7 @@ AI-Powered Weather Predictions: Utilizes a machine learning model to predict fut
 Intuitive User Interface: A responsive and easy-to-navigate web interface for accessing all features.
 
 3. HOW WE MADE THIS
+
 This application is built using a modern full-stack architecture, leveraging popular technologies and reliable weather APIs.
 
 Technology Stack:
