@@ -40,7 +40,7 @@ const StatusPanel = () => {
 
   useEffect(() => {
     console.log("✅ StatusPanel useEffect firing - fetching /api/status");
-    fetch('http://localhost:3000/api/status')
+    fetch('/api/status')
       .then(res => res.json())
       .then(({ weather, device }) => {
         setWeather(weather);
@@ -50,7 +50,7 @@ const StatusPanel = () => {
   }, []);
 
   useEffect(() => {
-    fetch('http://localhost:3000/api/astronomy')
+    fetch('/api/astronomy')
       .then(res => res.json())
       .then(({ astronomy }) => {
         setAstronomy(astronomy);
@@ -61,7 +61,7 @@ const StatusPanel = () => {
   // WebSocket for live updates
   useEffect(() => {
     // open WS on same host:port
-    const ws = new WebSocket(`ws://${window.location.hostname}:3000`);
+    const ws = new WebSocket(window.location.origin.replace(/^http/, 'ws'));
     wsRef.current = ws;
 
     ws.onopen = () => console.log('WS connected');
