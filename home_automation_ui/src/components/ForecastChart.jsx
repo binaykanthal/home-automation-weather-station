@@ -7,7 +7,7 @@ export default function ForecastChart() {
   const chartRef = useRef();
 
   useEffect(() => {
-    fetch('http://localhost:3000/api/forecast')
+    fetch('/api/forecast')
       .then(r => r.json())
       .then(setList)
       .catch(console.error);

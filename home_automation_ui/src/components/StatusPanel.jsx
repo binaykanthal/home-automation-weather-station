@@ -85,7 +85,7 @@ const StatusPanel = () => {
 
 
 
-  if (!weather || !device) { return (<p className="text-3xl font-bold">Please turn on IOT module</p>) }
+  if (!weather) { return (<p className="text-3xl font-bold">No Weather Data Present</p>) }
 
   const sunriseUtcMs = weather.sys.sunrise * 1000;
   const sunsetUtcMs = weather.sys.sunset * 1000;
@@ -143,7 +143,7 @@ const StatusPanel = () => {
         <header className="fixed top-0 left-0 w-full h-12 flex items-center bg-gray-900 bg-opacity-50 text-gray-200 px-6 z-20s">
           {/* Left: page title */}
           <div className="flex-1">
-            <h1 className="text-lg font-semibold">IOT Weather Station</h1>
+            <h1 className="text-lg font-semibold">Weather Station</h1>
           </div>
           {/* Center: date picker & search */}
           <div className="flex-1 flex justify-center items-center space-x-4">
@@ -308,7 +308,7 @@ const StatusPanel = () => {
                     <div className="w-full h-full overflow-y-auto">
 
                       <Card title="Control Board" className="flex-1 overflow-auto">
-                        <RelayControls device={device} />
+                        Available in local set up .Coming soon in web application
                       </Card>
                     </div>
                   );

@@ -5,7 +5,7 @@ export default function ForecastSlider() {
   const [byDay, setByDay] = useState({});
 
   useEffect(() => {
-    fetch('http://localhost:3000/api/forecast')
+    fetch('/api/forecast')
       .then(r => r.json())
       .then(list => setByDay(groupByDate(list)))
       .catch(console.error);

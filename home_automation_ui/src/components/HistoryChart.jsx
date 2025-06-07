@@ -10,7 +10,7 @@ export default function HistoryChart() {
 
  // 1) initial load of stored history
   useEffect(() => {
-    fetch('http://localhost:3000/api/history')
+    fetch('/api/history')
       .then(r => r.json())
       .then(data => setHistory(data))
       .catch(console.error);

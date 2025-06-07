@@ -4,7 +4,7 @@ export default function LocationSelector() {
     const [id, setId] = useState("");
   
     const save = () => {
-      fetch("http://localhost:3000/api/location", {
+      fetch("/api/location", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ id: Number(id) })
