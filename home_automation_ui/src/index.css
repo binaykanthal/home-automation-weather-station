@@ -1,0 +1,30 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ensure body uses our bg */
+body {
+  @apply bg-bg text-gray-100;
+}
+
+/* ——————————————————————————————— WebKit browsers ——————————————————————————————— */
+::-webkit-scrollbar {
+  width: 8px;               /* narrow scrollbar */
+  height: 8px;              /* for horizontal scrollbars */
+}
+::-webkit-scrollbar-track {
+  background: #1f2937;      /* match your bg-gray-800/card */
+}
+::-webkit-scrollbar-thumb {
+  background-color: #374151; /* a darker gray (bg-gray-700) */
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background-color: #4b5563; /* slightly lighter on hover (bg-gray-600) */
+}
+
+/* —————————————————————————————— Firefox —————————————————————————————— */
+* {
+  scrollbar-width: thin;                /* “auto” or “thin” */
+  scrollbar-color: #374151 #1f2937;     /* thumb color then track color */
+}
