@@ -99,17 +99,17 @@ const StatusPanel = () => {
   // Create Date objects based on these milliseconds (which are now in the location's time)
   const sunriseLocalDate = new Date(sunriseLocationMs);
   const sunsetLocalDate = new Date(sunsetLocationMs);
-
+  // Adjust the user's local time to the location's time for brightness calculation
+  const nowUtcMs = now.getTime() + now.getTimezoneOffset() * 60 * 1000; // Convert local time to UTC
+  const nowAtLocationMs = nowUtcMs + timezoneOffsetMs; // Adjust UTC to the location's time
+  const nowLocalDate= new Date(nowAtLocationMs);
+  
   // Function to format a UTC Date object and append the timezone offset
   const formatUTCDateWithOffset = (date) => {
     const hours = String(date.getUTCHours()).padStart(2, '0');
     const minutes = String(date.getUTCMinutes()).padStart(2, '0');
     return `${hours}:${minutes}`;
   };
-
-  // Adjust the user's local time to the location's time for brightness calculation
-  const nowUtcMs = now.getTime() + now.getTimezoneOffset() * 60 * 1000; // Convert local time to UTC
-  const nowAtLocationMs = nowUtcMs + timezoneOffsetMs; // Adjust UTC to the location's time
 
   const dayLenMs = sunsetUtcMs - sunriseUtcMs;
   const elapsedMs = Math.max(0, Math.min(nowAtLocationMs - sunriseUtcMs, dayLenMs > 0 ? dayLenMs : 0));
@@ -423,7 +423,7 @@ const StatusPanel = () => {
                           <CloudPie clouds={weather.clouds.all} />
                         </div>
                         <div>
-                          {now.getTime()}
+                          {formatUTCDateWithOffset(nowLocalDate, timezoneOffsetSeconds)}
                         </div>
                       </div>
                     </div>
