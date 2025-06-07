@@ -11,6 +11,3 @@ home_automation_ai_ml/myvenv/
 home_automation_ai_ml/__pycache__/
 home_automation_ai_ml/models/
 home_automation_ai_ml/models/*.pkl
-
-# Logs
-*.log
