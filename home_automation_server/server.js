@@ -293,5 +293,5 @@ app.get('.', (req, res) => {
 
 
 // start server
-const PORT = 3000;
+const PORT = process.env.PORT || 3000 ;
 server.listen(PORT, () => console.log(`API + WS listening on port ${PORT}`));
