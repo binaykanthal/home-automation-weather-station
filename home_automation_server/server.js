@@ -233,14 +233,20 @@ app.get("/api/status", async (req, res) => {
   try {
     // fetch device JSON
     const dev = await axios.get(`${ESP8266_BASE}/status`);
-    deviceData = dev.data;
-    res.json({
-      weather: weatherData,
-      device: dev.data
-    });
-  } catch (err) {
-    res.status(500).json({ error: err.message });
+    devData = dev.data;
+     } catch (err) {
+    console.warn("ESP8266 unreachable – returning empty device object:", err.message);
+    // fallback: all relays off, temp null (or whatever makes sense)
+    devData = {
+      relay1: 0, relay2: 0, relay3: 0,
+      relay4: 0, relay5: 0, relay6: 0, relay7: 0,
+      temp: null
+    };
   }
+     res.json({
+      weather: weatherData,   
+      device:  devData
+    });
 });
 
 // 3) POST /api/relay
