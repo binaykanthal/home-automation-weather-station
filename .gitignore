@@ -1,0 +1,16 @@
+# React build and dependencies
+home_automation_ui/node_modules/
+home_automation_ui/build/
+
+# Node server dependencies
+home_automation_server/node_modules/
+home_automation_server/.env
+
+# Python venv & caches
+home_automation_ai_ml/myvenv/
+home_automation_ai_ml/__pycache__/
+home_automation_ai_ml/models/
+home_automation_ai_ml/models/*.pkl
+
+# Logs
+*.log
