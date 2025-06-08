@@ -100,6 +100,7 @@ const StatusPanel = () => {
   const sunriseLocalDate = new Date(sunriseLocationMs);
   const sunsetLocalDate = new Date(sunsetLocationMs);
 
+  
   // Function to format a UTC Date object and append the timezone offset
   const formatUTCDateWithOffset = (date) => {
     const hours = String(date.getUTCHours()).padStart(2, '0');
