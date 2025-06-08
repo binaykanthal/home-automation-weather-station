@@ -86,6 +86,9 @@ const StatusPanel = () => {
 
 
   if (!weather) { return (<p className="text-3xl font-bold">No Weather Data Present</p>) }
+  if (!astronomy || !astronomy.astro) {
+    return <p className="text-xl">Loading astronomy data...</p>;
+  }
 
   const sunriseUtcMs = weather.sys.sunrise * 1000;
   const sunsetUtcMs = weather.sys.sunset * 1000;
@@ -120,10 +123,10 @@ const StatusPanel = () => {
   const brightness = b * 0.8 + 0.5;
 
 
-  const moonrise = astronomy.astro.moonrise;
-  const moonset = astronomy.astro.moonset;
-  const moon_phase = astronomy.astro.moon_phase;
-  const moon_illumination = astronomy.astro.moon_illumination;
+  const moonrise = astronomy?.astro?.moonrise || '--:--';
+  const moonset = astronomy?.astro?.moonset || '--:--';
+  const moon_phase = astronomy?.astro?.moon_phase || '--:--';
+  const moon_illumination = astronomy?.astro?.moon_illumination || '--:--';
 
 
   return (
