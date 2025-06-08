@@ -27,7 +27,6 @@ const currentDate = getCurrentDateFormatted();
 
 let weatherData = null;
 let deviceData = null;
-let locationId = 1275004;
 let history = [];
 let forecastData = null;
 let astronomyData = null;
@@ -70,7 +69,7 @@ function broadcast(payload) {
 async function fetchWeather() {
   try {
     const res = await axios.get(
-      `https://api.openweathermap.org/data/2.5/weather?id=${locationId}&units=metric&appid=${OWM_KEY}`
+      `https://api.openweathermap.org/data/2.5/weather?q=${currentCity}&units=metric&appid=${OWM_KEY}`
     );
     weatherData = res.data;
     console.log("Weather updated:", weatherData.main.temp, "°C");
@@ -137,7 +136,7 @@ cron.schedule("0 */3 * * *", () => {
 async function fetchForcast() {
   try {
     const res = await axios.get(
-      `https://api.openweathermap.org/data/2.5/forecast?id=${locationId}&units=metric&appid=${OWM_KEY}`
+      `https://api.openweathermap.org/data/2.5/forecast?q=${currentCity}&units=metric&appid=${OWM_KEY}`
     );
     forecastData = res.data;
     console.log("forecast updated:");
@@ -158,7 +157,7 @@ cron.schedule("0 */3 * * *", fetchForcast);
 async function fetchAstronomy() {
   try {
     const res = await axios.get(
-      `https://api.weatherapi.com/v1/astronomy.json?key=${WeatherApi_Key}&q=22.4731,88.1784&dt=${currentDate}`
+      `https://api.weatherapi.com/v1/astronomy.json?key=${WeatherApi_Key}&q=${currentCity}&dt=${currentDate}`
     );
     astronomyData = res.data;
     console.log("AstronomyData: ", astronomyData.astronomy.astro)
@@ -175,16 +174,16 @@ cron.schedule("0 */3 * * *", fetchAstronomy);
 //new endpoint: let UI select location
 app.post("/api/location", (req, res) => {
   const { id } = req.body;
-  if (!id || isNaN(id)) {
-    return res.status(400).json({ error: "Invalid location id" });
+  if (!id) {
+    return res.status(400).json({ error: "Invalid city id" });
   }
-  locationId = id;
-  console.log("Changed locationId to", locationId);
+  currentCity = id;
+  console.log("Changed currentCity to", currentCity);
   // Immediately fetch new weather for the new location:
   fetchWeather();
   fetchForcast();
   fetchAstronomy();
-  res.json({ success: true, locationId });
+  res.json({ success: true, currentCity });
 }); 
 
 

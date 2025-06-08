@@ -7,14 +7,14 @@ export default function LocationSelector() {
       fetch("/api/location", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ id: Number(id) })
+        body: JSON.stringify({ id: String(id) })
       });
     };
   
     return (
       <div className="flex space-x-2 mb-4 p-6 text-white bg-card">
         <input
-          type="number"
+          type="text"
           value={id}
           onChange={e => setId(e.target.value)}
           placeholder="Enter city ID"
