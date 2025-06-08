@@ -100,8 +100,7 @@ const StatusPanel = () => {
   const sunriseLocalDate = new Date(sunriseLocationMs);
   const sunsetLocalDate = new Date(sunsetLocationMs);
   // Adjust the user's local time to the location's time for brightness calculation
-  const nowUtcMs = now.getTime() + now.getTimezoneOffset() * 60 * 1000; // Convert local time to UTC
-  const nowAtLocationMs = nowUtcMs + timezoneOffsetMs; // Adjust UTC to the location's time
+  const nowAtLocationMs = now.getTime() + timezoneOffsetMs; // Adjust UTC to the location's time
   const nowLocalDate= new Date(nowAtLocationMs);
   
   // Function to format a UTC Date object and append the timezone offset
