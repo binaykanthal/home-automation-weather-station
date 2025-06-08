@@ -3,9 +3,8 @@ import React from "react";
 
 export default function Sky({ now, sunrise, sunset,timezone, children }) {
   // Adjust the user's local time to the location's time for brightness calculation
-  const nowUtcMs = now.getTime() + now.getTimezoneOffset() * 60 * 1000; // Convert local time to UTC
-  const nowAtLocationMs = nowUtcMs + timezone; // Adjust UTC to the location's time
-
+  const nowUtcMs = now.getTime() //+ now.getTimezoneOffset() * 60 * 1000; // Convert local time to UTC
+  const nowAtLocationMs = nowUtcMs //+ timezone;
   const isDay = nowAtLocationMs >= sunrise && nowAtLocationMs <= sunset;
 
   const dayLenMs = sunset - sunrise;

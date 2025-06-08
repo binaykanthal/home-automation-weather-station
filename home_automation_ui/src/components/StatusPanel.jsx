@@ -108,9 +108,10 @@ const StatusPanel = () => {
   };
 
   // Adjust the user's local time to the location's time for brightness calculation
-  const nowUtcMs = now.getTime() + now.getTimezoneOffset() * 60 * 1000; // Convert local time to UTC
-  const nowAtLocationMs = nowUtcMs + timezoneOffsetMs; // Adjust UTC to the location's time
-
+  const nowUtcMs = now.getTime();// Convert local time to UTC
+  const nowAtLocationMs = nowUtcMs + timezoneOffsetMs; 
+  const nowLocalDate= new Date(nowAtLocationMs);  
+  
   const dayLenMs = sunsetUtcMs - sunriseUtcMs;
   const elapsedMs = Math.max(0, Math.min(nowAtLocationMs - sunriseUtcMs, dayLenMs > 0 ? dayLenMs : 0));
   const t = dayLenMs > 0 ? elapsedMs / dayLenMs : 0;
@@ -421,6 +422,12 @@ const StatusPanel = () => {
                         <div className="bg-gradient-to-br from-purple-600 to-teal-200 p-4 rounded-xl shadow-lg flex flex-col items-center">
                           <p className="text-sm text-gray-200 mb-2">Cloud Coverage</p>
                           <CloudPie clouds={weather.clouds.all} />
+                        </div>
+                        <div  className="bg-gradient-to-br from-purple-600 to-teal-200 p-4 rounded-xl shadow-lg flex flex-col items-center">
+                          <p className="text-sm text-gray-200 mb-2">Local Time</p>
+                          <p className="text-2xl font-bold">
+                            {formatUTCDateWithOffset(nowLocalDate)}
+                          </p>
                         </div>
                       </div>
                     </div>
