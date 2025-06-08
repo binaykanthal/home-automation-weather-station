@@ -3,10 +3,7 @@ import pandas as pd
 from datetime import timedelta
 from preprocessing import preprocess_data
 from feature_engineer import feature_engineer
-from parse_weather_data import read_historical_data 
-from download_models import fetch_all_models
-
-fetch_all_models()
+from parse_weather_data import read_historical_data,fetch_historical_data 
 
 # load artifacts
 rf_temp_model           = joblib.load('models/rf_temp_model.pkl')
@@ -116,6 +113,7 @@ def predict_future_weather_with_location(
     models/scaler/encoder/feature_columns: your trained artifacts
     returns: list of dicts, one per hour ahead
     """
+    preprocess_data(fetch_historical_data()).iloc[-24:].to_csv('kolkata_weather_data_last24.csv')
     historical_df = read_historical_data('kolkata_weather_data_last24.csv')
     # only keep the columns your pipeline expects
     expected_cols = ['temp','dwpt','rhum','prcp','wdir','wspd','pres','coco']
