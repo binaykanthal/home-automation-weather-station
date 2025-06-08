@@ -40,6 +40,8 @@ const server = require('http').createServer(app);
 //create websocket on same http server
 const wss = new WebSocket.Server({ server });
 
+const PREDICTOR_URL = process.env.PREDICTOR_URL || 'http://localhost:5001';
+
 // whenever a client connects…
 wss.on("connection", ws => {
   console.log("WS client connected");
@@ -205,7 +207,7 @@ app.post("/api/predict", async (req, res) => {
     }
     console.log("Formatted live data for Flask:", formattedRow);
     try {
-        const flaskResponse = await axios.post('http://localhost:5001/predict', {
+        const flaskResponse = await axios.post(`${PREDICTOR_URL}/predict`, {
             live: formattedRow, 
             hours: hours || 5 
         });

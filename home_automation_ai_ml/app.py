@@ -3,6 +3,7 @@ import pandas as pd
 from datetime import datetime
 from flask_cors import CORS # Import Flask-CORS 
 from predictor import predict_future_weather_with_location
+import os
 
 app = Flask(__name__)
 CORS(app) 
@@ -37,4 +38,5 @@ def predict():
     return jsonify(preds)
 
 if __name__ == '__main__':
-    app.run(port=5001, debug=True) # debug=True is useful for development
+    port = int(os.environ.get("PORT", 5001))
+    app.run(host="0.0.0.0", port=port, debug=False)
