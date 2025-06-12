@@ -20,6 +20,7 @@ const StatusPanel = () => {
   const wsRef = useRef(null);
   const [astronomy, setAstronomy] = useState(null);
   const [activeSection, setActiveSection] = useState('overview');
+  const [aqi, setAQI] = useState(null);
 
   const menuItems = [
     { key: 'overview', label: 'What Am I', sub: 'Brief Description' },
@@ -58,6 +59,15 @@ const StatusPanel = () => {
       .catch(console.error);
   }, []);
 
+  useEffect(() => {
+    fetch('/api/aqi')
+      .then(res => res.json())
+      .then(({ aqi }) => {
+        setAQI(aqi);
+      })
+      .catch(console.error);
+  }, []);
+
   // WebSocket for live updates
   useEffect(() => {
     // open WS on same host:port
@@ -88,6 +98,10 @@ const StatusPanel = () => {
   if (!weather) { return (<p className="text-3xl font-bold">No Weather Data Present</p>) }
   if (!astronomy || !astronomy.astro) {
     return <p className="text-xl">Loading astronomy data...</p>;
+  }
+
+  if (!aqi) {
+    return <p className="text-xl">Loading aqi data...</p>;
   }
 
   const sunriseUtcMs = weather.sys.sunrise * 1000;
@@ -127,6 +141,17 @@ const StatusPanel = () => {
   const moonset = astronomy?.astro?.moonset || '--:--';
   const moon_phase = astronomy?.astro?.moon_phase || '--:--';
   const moon_illumination = astronomy?.astro?.moon_illumination || '--:--';
+
+  const aqiMessage = (()=>{
+    switch (aqi) {
+    case 1:return "Good";
+    case 2:return "Fair";
+    case 3:return "Moderate";
+    case 4:return "Poor";
+    case 5:return "Very Bad";
+    default:return "No AQI Details available";
+  }
+  })();
 
 
   return (
@@ -346,6 +371,17 @@ const StatusPanel = () => {
                           <p className="text-3xl font-bold">{weather.main.temp.toFixed(1)}°C</p>
                         </div>
 
+                        <div  className="bg-gradient-to-br from-purple-600 to-teal-200 p-4 rounded-xl shadow-lg flex flex-col items-center">
+                          <p className="text-sm text-gray-200 mb-2">Local Time</p>
+                          <p className="text-2xl font-bold">
+                            {formatUTCDateWithOffset(nowLocalDate)}
+                          </p>
+                          <p className="text-sm text-gray-200 mb-2">Air Quality Index : {aqi}</p>
+                          <p className="text-2xl font-bold">
+                            {aqiMessage}
+                          </p>
+                        </div>
+
                         {/* Sunrise / Sunset */}
                         <div className="bg-gradient-to-br from-purple-600 to-teal-200 p-4 rounded-xl shadow-lg">
                           <div className="flex justify-between">
@@ -427,12 +463,7 @@ const StatusPanel = () => {
                           <p className="text-sm text-gray-200 mb-2">Cloud Coverage</p>
                           <CloudPie clouds={weather.clouds.all} />
                         </div>
-                        <div  className="bg-gradient-to-br from-purple-600 to-teal-200 p-4 rounded-xl shadow-lg flex flex-col items-center">
-                          <p className="text-sm text-gray-200 mb-2">Local Time</p>
-                          <p className="text-2xl font-bold">
-                            {formatUTCDateWithOffset(nowLocalDate)}
-                          </p>
-                        </div>
+                        
                       </div>
                     </div>
                   );

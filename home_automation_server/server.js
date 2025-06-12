@@ -32,6 +32,9 @@ let forecastData = null;
 let astronomyData = null;
 let liveData = null;
 let currentCity = "Kolkata";
+let aqiData = null;
+let latitude= "22.5697";
+let longitude = "88.3697";
 
 const WebSocket = require('ws');
 //create http server and attah express
@@ -169,23 +172,64 @@ async function fetchAstronomy() {
 }
 }
 
+async function fetchAirQualityData() {
+  try {
+    const res = await axios.get(
+      `http://api.openweathermap.org/data/2.5/air_pollution?lat=${latitude}&lon=${longitude}&appid=${OWM_KEY}`
+    );
+    aqiData= res.data;
+    broadcast({ type: "aqi", data: aqiData });
+  } catch (error) {
+    console.error("Failed to fetch AQI data:", error.message);
+  }
+}
+
 fetchAstronomy();
 cron.schedule("0 */3 * * *", fetchAstronomy);
 
+fetchAirQualityData();
+cron.schedule("0 */1 * * *", fetchAirQualityData);
+
+app.post("/api/suggestion", async (req, res) => {
+  const { id } = req.body;
+  if (!id || typeof id !== "string") {
+    return res.status(400).json({ error: "Invalid city query" });
+  }
+  try {
+    const geoRes = await axios.get(
+      `https://api.openweathermap.org/geo/1.0/direct?q=${encodeURIComponent(id)}&limit=5&appid=${OWM_KEY}`
+    );
+    // map to only the fields we need
+    const suggestions = geoRes.data.map(c => ({
+      name: c.name,
+      country: c.country,
+      lat: c.lat,
+      lon: c.lon
+    }));
+    return res.json(suggestions);
+  } catch (err) {
+    console.error("Error fetching suggestions:", err.message);
+    return res.status(500).json({ error: "Failed to fetch suggestions" });
+  }
+});
 
 //new endpoint: let UI select location
 app.post("/api/location", (req, res) => {
-  const { id } = req.body;
+  const { id, lat, lon} = req.body;
   if (!id) {
-    return res.status(400).json({ error: "Invalid city id" });
+    return res.status(400).json({ error: "Invalid city Name" });
   }
   currentCity = id;
+  latitude = lat;
+  longitude = lon;
   console.log("Changed currentCity to", currentCity);
+  console.log("lat,log",currentCity,lat,lon);
   // Immediately fetch new weather for the new location:
   fetchWeather();
+  fetchAirQualityData();
   fetchForcast();
   fetchAstronomy();
-  res.json({ success: true, currentCity });
+  res.json({ success: true, currentCity,latitude,longitude });
 }); 
 
 
@@ -291,6 +335,13 @@ app.get("/api/astronomy", (req, res) => {
   res.json(astronomyData);
 });
 
+app.get("/api/aqi", async(req, res) => {
+  // astronomy data was set in fetchAstronomy()
+  if (!aqiData) {
+    return res.status(503).json({ error: "AQI not ready" });
+  }
+  res.json({"aqi":aqiData.list[0].main.aqi});
+});
 
 app.get('.', (req, res) => {
   res.sendFile(path.join(__dirname, '../home_automation_ui/build/index.html'));
