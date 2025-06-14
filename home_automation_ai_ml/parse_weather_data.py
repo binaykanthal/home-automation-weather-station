@@ -18,5 +18,3 @@ def fetch_historical_data():
     df.index.name = 'time'
     # drop unused columns
     return df.drop(['snow', 'tsun', 'wpgt'], axis=1)
-
-hist24 = preprocess_data(fetch_historical_data()).iloc[-24:].to_csv('kolkata_weather_data_last24.csv')
