@@ -24,7 +24,7 @@ output_file = 'kolkata_weather_data_4.csv'
 df.to_csv(output_file)
 print(f"\nData saved to {output_file}")
 print("\n Download completed")
-WEATHER_API_KEY = 'b54d480e27c44af6a5f133554250405' 
+WEATHER_API_KEY = '' 
 BASE_URL = 'https://api.weatherapi.com/v1/'
 CITY = 'Kolkata'
 
