@@ -48,6 +48,12 @@ export default function Predictions() {
       return;
     }
 
+    if(currentHours > 360){
+      setError("Prediction available only for next 15 days, Maximum hour limit 360");
+      setLoading(false);
+      return;
+    }
+
     try {
       const response = await fetch('/api/predict', {
         method: "POST",
@@ -81,7 +87,7 @@ export default function Predictions() {
           type="text"
           value={combinedInput}
           onChange={handleCombinedInputChange}
-          placeholder="Enter city and hours (e.g., Kolkata, 6 or London 10)"
+          placeholder="Enter city and hours (e.g., Kolkata, 6 or Mumbai 10)"
           className="p-2 rounded border bg-gray-700 text-white placeholder-gray-400 flex-grow"
         />
         <button

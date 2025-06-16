@@ -31,10 +31,10 @@ let history = [];
 let forecastData = null;
 let astronomyData = null;
 let liveData = null;
-let currentCity = "Kolkata";
+let currentCity = "";
 let aqiData = null;
-let latitude= "22.5697";
-let longitude = "88.3697";
+let latitude= "";
+let longitude = "";
 
 const WebSocket = require('ws');
 //create http server and attah express
@@ -213,6 +213,60 @@ app.post("/api/suggestion", async (req, res) => {
   }
 });
 
+app.post("/api/reverselocation", async (req, res) => {
+  const { lat, lon } = req.body;
+  if (!lat || !lon) {
+    return res.status(400).json({ error: "latitude and longitude required" });
+  }
+  try {
+    const geoReverse = await axios.get(
+      `http://api.openweathermap.org/geo/1.0/reverse?lat=${lat}&lon=${lon}&limit=1&appid=${OWM_KEY}`
+    );
+    // map to only the fields we need
+    const data = geoReverse.data;
+    if(data.length=== 0){
+      return res.status(400).json({ error: "No city found with the coordinates" });
+    };
+    const city = {
+      name: data[0].name,
+      country:data[0].country,
+      lat: data[0].lat,
+      lon: data[0].lon
+    }
+    return res.json(city);
+  } catch (err) {
+    console.error("Error in reverse geocode:", err.message);
+    return res.status(500).json({ error: "Failed to fetch location from coordinates" });
+  }
+});
+
+app.post("/api/geolocation", async (req, res) => {
+  const { location } = req.body;
+  if (!location) {
+    return res.status(400).json({ error: "location required" });
+  }
+  try {
+    const geolocation = await axios.get(
+      `https://api.openweathermap.org/geo/1.0/direct?q=${location}&limit=1&appid=${OWM_KEY}`
+    );
+    // map to only the fields we need
+    const data = geolocation.data;
+    if(data.length=== 0){
+      return res.status(400).json({ error: "No city found with the coordinates" });
+    };
+    const cityDetails = {
+      name: data[0].name,
+      country:data[0].country,
+      lat: data[0].lat,
+      lon: data[0].lon
+    }
+    return res.json(cityDetails);
+  } catch (err) {
+    console.error("Error in reverse geocode:", err.message);
+    return res.status(500).json({ error: "Failed to fetch location from coordinates" });
+  }
+});
+
 //new endpoint: let UI select location
 app.post("/api/location", (req, res) => {
   const { id, lat, lon} = req.body;
@@ -281,6 +335,9 @@ app.get("/api/status", async (req, res) => {
       relay4: 0, relay5: 0, relay6: 0, relay7: 0,
       temp: null
     };
+    if (!weatherData) {
+      return res.status(400).json({ error: "Weather data not available!" });
+    }
     res.json({
       weather: weatherData,   
       device: deviceData
